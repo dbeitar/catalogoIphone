@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo iPhone</title>
+    <title>Catálogo iPhone Premium - Disponibles Ya!</title>
+    
+    <!-- Meta tags para compartir en WhatsApp y redes sociales -->
+    <meta property="og:title" content="iPhone Premium Collection - Disponibles Ya!">
+    <meta property="og:description" content="iPhones de alta calidad con baterías arriba del 80%. Desde iPhone 13 hasta iPhone 17 Pro. ¡Consulta disponibilidad!">
+    <meta property="og:image" content="TU_URL_DE_IMAGEN_AQUI">
+    <meta property="og:url" content="TU_URL_DEL_CATALOGO">
+    <meta property="og:type" content="website">
+    
+    <meta name="description" content="iPhones premium disponibles. Baterías +80%. Desde iPhone 13 hasta iPhone 17 Pro.">
+    <meta name="theme-color" content="#667eea">
     <style>
         * {
             margin: 0;
@@ -19,7 +29,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -55,9 +65,93 @@
             font-size: 1.1em;
         }
 
+        /* Controles de búsqueda y filtros */
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .reset-btn {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            align-self: flex-end;
+        }
+
+        .reset-btn:hover {
+            background: #5568d3;
+        }
+
+        .results-count {
+            text-align: center;
+            color: white;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
@@ -65,16 +159,21 @@
         .card {
             background: white;
             border-radius: 20px;
-            padding: 25px;
+            overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card.hidden {
+            display: none;
         }
 
         .card::before {
@@ -85,6 +184,62 @@
             width: 100%;
             height: 5px;
             background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .placeholder-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            opacity: 0.3;
+        }
+
+        .gallery-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .gallery-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .gallery-dot.active {
+            background: white;
+        }
+
+        .card-content {
+            padding: 25px;
         }
 
         .model {
@@ -142,6 +297,78 @@
             border-radius: 12px;
             font-size: 0.8em;
             font-weight: 600;
+            z-index: 10;
+        }
+
+        /* Modal para galería */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #667eea;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 50px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            user-select: none;
+        }
+
+        .modal-nav:hover {
+            background: rgba(102, 126, 234, 0.8);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
         }
 
         footer {
@@ -177,14 +404,37 @@
             background: #20ba5a;
         }
 
+        .no-results {
+            text-align: center;
+            color: white;
+            font-size: 1.3em;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.8em;
             }
             
             .grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 15px;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .modal-nav {
+                font-size: 30px;
+                padding: 5px 15px;
             }
         }
     </style>
@@ -199,12 +449,82 @@
             </div>
         </header>
 
+        <div class="controls">
+            <input 
+                type="text" 
+                id="searchBox" 
+                class="search-box" 
+                placeholder="🔍 Buscar por modelo... (Ej: iPhone 15 Pro)"
+            >
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label>Modelo</label>
+                    <select id="modelFilter">
+                        <option value="">Todos los modelos</option>
+                        <option value="13">iPhone 13</option>
+                        <option value="14">iPhone 14</option>
+                        <option value="15">iPhone 15</option>
+                        <option value="16">iPhone 16</option>
+                        <option value="17">iPhone 17</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Rango de Precio</label>
+                    <select id="priceFilter">
+                        <option value="">Todos los precios</option>
+                        <option value="0-2000000">Hasta $2.000.000</option>
+                        <option value="2000000-3000000">$2.000.000 - $3.000.000</option>
+                        <option value="3000000-4000000">$3.000.000 - $4.000.000</option>
+                        <option value="4000000-99999999">Más de $4.000.000</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select id="conditionFilter">
+                        <option value="">Todos</option>
+                        <option value="perfect">Sin detalles físicos</option>
+                        <option value="details">Con detalles menores</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Ordenar por</label>
+                    <select id="sortFilter">
+                        <option value="">Sin ordenar</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="model-asc">Modelo: A-Z</option>
+                    </select>
+                </div>
+
+                <button class="reset-btn" onclick="resetFilters()">🔄 Resetear</button>
+            </div>
+        </div>
+
+        <div class="results-count" id="resultsCount"></div>
+
         <div class="grid" id="products"></div>
+        <div class="no-results" id="noResults" style="display: none;">
+            😔 No se encontraron productos con esos filtros. Intenta con otros criterios.
+        </div>
+
+        <!-- Modal para galería -->
+        <div class="modal" id="imageModal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+                <span class="modal-nav modal-prev" onclick="changeImage(-1)">❮</span>
+                <img class="modal-image" id="modalImage" src="" alt="">
+                <span class="modal-nav modal-next" onclick="changeImage(1)">❯</span>
+            </div>
+        </div>
 
         <footer>
             <h2>📱 ¡Contáctanos!</h2>
             <p class="contact-info">Pregunta por disponibilidad y opciones de pago</p>
-            <a href="https://wa.me/573124166034?text=Hola!%20Me%20interesa%20información%20sobre%20los%20iPhones%20disponibles" class="whatsapp-btn" target="_blank">💬 Enviar mensaje por WhatsApp</a>
+            <a href="https://wa.me/57TUNUMERO?text=Hola!%20Me%20interesa%20información%20sobre%20los%20iPhones%20disponibles" class="whatsapp-btn" target="_blank">💬 Enviar mensaje por WhatsApp</a>
             <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
                 Todos los precios en COP (Pesos Colombianos) • Envíos disponibles
             </p>
@@ -213,43 +533,284 @@
 
     <script>
         const products = [
-            { model: "iPhone 13", variant: "Normal", price: 1450000, details: false, count: 1 },
-            { model: "iPhone 13", variant: "Normal", price: 1300000, details: true, count: 2 },
-            { model: "iPhone 15", variant: "Normal", price: 2200000, details: false, count: 1 },
-            { model: "iPhone 15 Pro", variant: "Pro", price: 2600000, details: true, count: 1 },
-            { model: "iPhone 15 Pro", variant: "Pro", price: 2650000, details: false, count: 2 },
-            { model: "iPhone 16 Pro", variant: "Pro", price: 3250000, details: false, count: 1 },
-            { model: "iPhone 14 Pro", variant: "Pro", price: 2100000, details: true, count: 1 },
-            { model: "iPhone 14 Pro", variant: "Pro", price: 2150000, details: false, count: 3 },
-            { model: "iPhone 15 Pro Max", variant: "Pro Max", price: 3100000, details: false, count: 1 },
-            { model: "iPhone 16 Pro Max", variant: "Pro Max", price: 3900000, details: false, count: 2 },
-            { model: "iPhone 17 Pro", variant: "Pro", price: 4600000, details: false, count: 1 }
+            { 
+                model: "iPhone 13", 
+                variant: "Normal", 
+                price: 1450000, 
+                details: false, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=800",
+                    "https://images.unsplash.com/photo-1663499482523-1c0d8c17d8ca?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 13", 
+                variant: "Normal", 
+                price: 1300000, 
+                details: true, 
+                count: 2,
+                images: [
+                    "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 15", 
+                variant: "Normal", 
+                price: 2200000, 
+                details: false, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800",
+                    "https://images.unsplash.com/photo-1695048133150-edb5268f9a13?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 15 Pro", 
+                variant: "Pro", 
+                price: 2600000, 
+                details: true, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1696446702593-8d3bbb88b276?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 15 Pro", 
+                variant: "Pro", 
+                price: 2650000, 
+                details: false, 
+                count: 2,
+                images: [
+                    "https://images.unsplash.com/photo-1696446702593-8d3bbb88b276?w=800",
+                    "https://images.unsplash.com/photo-1696446702500-8004ebe1f632?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 16 Pro", 
+                variant: "Pro", 
+                price: 3250000, 
+                details: false, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1725610147668-d2da1ba1055d?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 14 Pro", 
+                variant: "Pro", 
+                price: 2100000, 
+                details: true, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1678652197753-c415b2e0ae1c?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 14 Pro", 
+                variant: "Pro", 
+                price: 2150000, 
+                details: false, 
+                count: 3,
+                images: [
+                    "https://images.unsplash.com/photo-1678652197753-c415b2e0ae1c?w=800",
+                    "https://images.unsplash.com/photo-1678911821799-d4c1f8b0f4e6?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 15 Pro Max", 
+                variant: "Pro Max", 
+                price: 3100000, 
+                details: false, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1697461870878-35adf7e03c95?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 16 Pro Max", 
+                variant: "Pro Max", 
+                price: 3900000, 
+                details: false, 
+                count: 2,
+                images: [
+                    "https://images.unsplash.com/photo-1726683418828-30df90c3c3e1?w=800"
+                ]
+            },
+            { 
+                model: "iPhone 17 Pro", 
+                variant: "Pro", 
+                price: 4600000, 
+                details: false, 
+                count: 1,
+                images: [
+                    "https://images.unsplash.com/photo-1696446702593-8d3bbb88b276?w=800"
+                ]
+            }
         ];
 
-        const container = document.getElementById('products');
+        let filteredProducts = [...products];
+        let currentImageIndex = 0;
+        let currentProductImages = [];
 
-        products.forEach((product, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
+        function renderProducts(productsToRender) {
+            const container = document.getElementById('products');
+            const noResults = document.getElementById('noResults');
+            const resultsCount = document.getElementById('resultsCount');
             
-            const formattedPrice = product.price.toLocaleString('es-CO');
-            const unitsText = product.count > 1 ? `${product.count} unidades disponibles` : '1 unidad disponible';
+            container.innerHTML = '';
             
-            card.innerHTML = `
-                <div class="stock-badge">Disponible</div>
-                <div class="model">
-                    <span class="apple-icon"></span>
-                    ${product.model}
-                </div>
-                <div class="price">
-                    <span class="price-symbol">$</span>${formattedPrice}
-                </div>
-                <div class="units">${unitsText}</div>
-                ${product.details ? '<div class="details">⚠️ Detalles físicos menores</div>' : ''}
-            `;
+            if (productsToRender.length === 0) {
+                noResults.style.display = 'block';
+                resultsCount.textContent = '';
+                return;
+            }
             
-            container.appendChild(card);
+            noResults.style.display = 'none';
+            resultsCount.textContent = `📱 ${productsToRender.length} producto${productsToRender.length > 1 ? 's' : ''} disponible${productsToRender.length > 1 ? 's' : ''}`;
+
+            productsToRender.forEach((product, index) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                const formattedPrice = product.price.toLocaleString('es-CO');
+                const unitsText = product.count > 1 ? `${product.count} unidades disponibles` : '1 unidad disponible';
+                
+                const imagesHTML = product.images.map((img, i) => 
+                    `<img src="${img}" alt="${product.model}" class="product-image" style="display: ${i === 0 ? 'block' : 'none'}" data-index="${i}">`
+                ).join('');
+                
+                const dotsHTML = product.images.length > 1 ? `
+                    <div class="gallery-indicator">
+                        ${product.images.map((_, i) => 
+                            `<div class="gallery-dot ${i === 0 ? 'active' : ''}" data-img-index="${i}"></div>`
+                        ).join('')}
+                    </div>
+                ` : '';
+                
+                card.innerHTML = `
+                    <div class="stock-badge">Disponible</div>
+                    <div class="image-container" onclick="openModal(${index})">
+                        ${imagesHTML}
+                        ${dotsHTML}
+                        <div class="placeholder-icon">📱</div>
+                    </div>
+                    <div class="card-content">
+                        <div class="model">
+                            <span class="apple-icon"></span>
+                            ${product.model}
+                        </div>
+                        <div class="price">
+                            <span class="price-symbol">$</span>${formattedPrice}
+                        </div>
+                        <div class="units">${unitsText}</div>
+                        ${product.details ? '<div class="details">⚠️ Detalles físicos menores</div>' : ''}
+                    </div>
+                `;
+                
+                if (product.images.length > 1) {
+                    const dots = card.querySelectorAll('.gallery-dot');
+                    const images = card.querySelectorAll('.product-image');
+                    
+                    dots.forEach(dot => {
+                        dot.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const imgIndex = parseInt(dot.dataset.imgIndex);
+                            images.forEach(img => img.style.display = 'none');
+                            dots.forEach(d => d.classList.remove('active'));
+                            images[imgIndex].style.display = 'block';
+                            dot.classList.add('active');
+                        });
+                    });
+                }
+                
+                container.appendChild(card);
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const modelFilter = document.getElementById('modelFilter').value;
+            const priceFilter = document.getElementById('priceFilter').value;
+            const conditionFilter = document.getElementById('conditionFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+
+            filteredProducts = products.filter(product => {
+                const matchesSearch = product.model.toLowerCase().includes(searchTerm);
+                const matchesModel = !modelFilter || product.model.includes(modelFilter);
+                
+                let matchesPrice = true;
+                if (priceFilter) {
+                    const [min, max] = priceFilter.split('-').map(Number);
+                    matchesPrice = product.price >= min && product.price <= max;
+                }
+                
+                let matchesCondition = true;
+                if (conditionFilter === 'perfect') matchesCondition = !product.details;
+                if (conditionFilter === 'details') matchesCondition = product.details;
+                
+                return matchesSearch && matchesModel && matchesPrice && matchesCondition;
+            });
+
+            if (sortFilter === 'price-asc') {
+                filteredProducts.sort((a, b) => a.price - b.price);
+            } else if (sortFilter === 'price-desc') {
+                filteredProducts.sort((a, b) => b.price - a.price);
+            } else if (sortFilter === 'model-asc') {
+                filteredProducts.sort((a, b) => a.model.localeCompare(b.model));
+            }
+
+            renderProducts(filteredProducts);
+        }
+
+        function resetFilters() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('modelFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            document.getElementById('conditionFilter').value = '';
+            document.getElementById('sortFilter').value = '';
+            applyFilters();
+        }
+
+        function openModal(productIndex) {
+            const modal = document.getElementById('imageModal');
+            currentProductImages = filteredProducts[productIndex].images;
+            currentImageIndex = 0;
+            document.getElementById('modalImage').src = currentProductImages[0];
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = currentProductImages.length - 1;
+            if (currentImageIndex >= currentProductImages.length) currentImageIndex = 0;
+            document.getElementById('modalImage').src = currentProductImages[currentImageIndex];
+        }
+
+        document.getElementById('searchBox').addEventListener('input', applyFilters);
+        document.getElementById('modelFilter').addEventListener('change', applyFilters);
+        document.getElementById('priceFilter').addEventListener('change', applyFilters);
+        document.getElementById('conditionFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortFilter').addEventListener('change', applyFilters);
+
+        document.getElementById('imageModal').addEventListener('click', (e) => {
+            if (e.target.id === 'imageModal') closeModal();
         });
+
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('imageModal');
+            if (modal.classList.contains('active')) {
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+            }
+        });
+
+        renderProducts(products);
     </script>
 </body>
 </html>
