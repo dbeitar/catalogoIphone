@@ -1,1 +1,255 @@
-<h1>github page</h1>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo iPhone</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-top: 10px;
+        }
+
+        .battery-info {
+            display: inline-block;
+            background: rgba(76, 217, 100, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .model {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .apple-icon {
+            font-size: 1.2em;
+        }
+
+        .price {
+            font-size: 2em;
+            font-weight: 800;
+            color: #667eea;
+            margin: 15px 0;
+        }
+
+        .price-symbol {
+            font-size: 0.6em;
+            vertical-align: super;
+        }
+
+        .details {
+            display: inline-block;
+            background: #fff3cd;
+            color: #856404;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-top: 10px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .units {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #4cd964;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+
+        .contact-info {
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+
+        .whatsapp-btn {
+            display: inline-block;
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+            font-size: 1.1em;
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.05);
+            background: #20ba5a;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍎 iPhone Premium Collection</h1>
+            <p class="subtitle">Dispositivos de Alta Calidad</p>
+            <div class="battery-info">
+                🔋 Todas las baterías por encima del 80%
+            </div>
+        </header>
+
+        <div class="grid" id="products"></div>
+
+        <footer>
+            <h2>📱 ¡Contáctanos!</h2>
+            <p class="contact-info">Pregunta por disponibilidad y opciones de pago</p>
+            <a href="https://wa.me/573124166034?text=Hola!%20Me%20interesa%20información%20sobre%20los%20iPhones%20disponibles" class="whatsapp-btn" target="_blank">💬 Enviar mensaje por WhatsApp</a>
+            <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.8;">
+                Todos los precios en COP (Pesos Colombianos) • Envíos disponibles
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const products = [
+            { model: "iPhone 13", variant: "Normal", price: 1450000, details: false, count: 1 },
+            { model: "iPhone 13", variant: "Normal", price: 1300000, details: true, count: 2 },
+            { model: "iPhone 15", variant: "Normal", price: 2200000, details: false, count: 1 },
+            { model: "iPhone 15 Pro", variant: "Pro", price: 2600000, details: true, count: 1 },
+            { model: "iPhone 15 Pro", variant: "Pro", price: 2650000, details: false, count: 2 },
+            { model: "iPhone 16 Pro", variant: "Pro", price: 3250000, details: false, count: 1 },
+            { model: "iPhone 14 Pro", variant: "Pro", price: 2100000, details: true, count: 1 },
+            { model: "iPhone 14 Pro", variant: "Pro", price: 2150000, details: false, count: 3 },
+            { model: "iPhone 15 Pro Max", variant: "Pro Max", price: 3100000, details: false, count: 1 },
+            { model: "iPhone 16 Pro Max", variant: "Pro Max", price: 3900000, details: false, count: 2 },
+            { model: "iPhone 17 Pro", variant: "Pro", price: 4600000, details: false, count: 1 }
+        ];
+
+        const container = document.getElementById('products');
+
+        products.forEach((product, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const formattedPrice = product.price.toLocaleString('es-CO');
+            const unitsText = product.count > 1 ? `${product.count} unidades disponibles` : '1 unidad disponible';
+            
+            card.innerHTML = `
+                <div class="stock-badge">Disponible</div>
+                <div class="model">
+                    <span class="apple-icon"></span>
+                    ${product.model}
+                </div>
+                <div class="price">
+                    <span class="price-symbol">$</span>${formattedPrice}
+                </div>
+                <div class="units">${unitsText}</div>
+                ${product.details ? '<div class="details">⚠️ Detalles físicos menores</div>' : ''}
+            `;
+            
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>
